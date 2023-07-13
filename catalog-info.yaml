@@ -1,0 +1,68 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: training-divyesh-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: training-divyesh-poi-gateway-app-dev
+    backstage.io/kubernetes-id: training-divyesh-poi-gateway-app
+    backstage.io/kubernetes-namespace: training-divyesh
+    janus-idp.io/tekton-enabled : 'true'
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rosa916-rvhvd/training-divyesh-gateway
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.rosa916.9nln.p1.openshiftapps.com/dev-pipelines/ns/training-divyesh/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.rosa916.9nln.p1.openshiftapps.com/k8s/ns/training-divyesh/deployments/training-divyesh-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.rosa916.9nln.p1.openshiftapps.com/#https://github.com/rosa916-rvhvd/training-divyesh-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/ryanj"
+  system: workshop-system-training-divyesh
+  providesApis:
+    - gateway-api-training-divyesh
+  consumesApis:
+    - backend-api-training-divyesh
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-training-divyesh
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/ryanj"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-training-divyesh
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://training-divyesh-poi-gateway-app-training-divyesh.apps.rosa916.9nln.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rosa916-rvhvd/training-divyesh-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/ryanj"
+  system: workshop-system-training-divyesh
+  definition:
+    $text: https://github.com/rosa916-rvhvd/training-divyesh-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
